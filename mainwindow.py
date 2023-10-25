@@ -9,6 +9,7 @@ from PIL import ImageTk, Image
 import customtkinter as ctk
 from menu_registro import *
 from funciones2 import *
+from menu_pagos import *
 #from funct import *
 
 # Creamos una ventana principal
@@ -95,7 +96,7 @@ pagos_menu = Menu(menu_bar, tearoff=0, font=("calibri", 11),
                     background="gray80")
 menu_bar.add_cascade(label="PAGOS", menu=pagos_menu)
 
-pagos_menu.add_command(label="Inscripcion")
+pagos_menu.add_command(label="Inscripcion",command=inscripcion)
 pagos_menu.add_command(label="Mensualidad")
 pagos_menu.add_command(label="Cierre Diario", command=cierre)
 pagos_menu.add_command(label="Facturas")
