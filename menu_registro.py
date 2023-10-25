@@ -263,7 +263,7 @@ def alumno():
     mywindow.mainloop()
 
 def ingresaralumno():
-   sql = "INSERT INTO alumno (cedula,cedula_representante,nombre,direccion,telefono,pago,curso)  VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')".format(ecedula_entry.get(),ecedrepresentante_entry.get(),eusername_entry.get(),edireccion_entry.get(),etelefono_entry.get(),0,egrado_entry.getitem())
+   sql = "INSERT INTO alumno (cedula,cedula_representante,nombre,direccion,telefono,pago,curso)  VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')".format(ecedula_entry.get(),ecedrepresentante_entry.get(),eusername_entry.get(),edireccion_entry.get(),etelefono_entry.get(),0,egrado_entry.get())
 	
    
    cur.execute(sql)
