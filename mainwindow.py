@@ -97,7 +97,10 @@ pagos_menu = Menu(menu_bar, tearoff=0, font=("calibri", 11),
 menu_bar.add_cascade(label="PAGOS", menu=pagos_menu)
 
 pagos_menu.add_command(label="Inscripcion",command=inscripcion)
-pagos_menu.add_command(label="Mensualidad")
+
+pagos_menu.add_command(label="Mensualidad",command=pago_mensualidad)
+
+
 pagos_menu.add_command(label="Cierre Diario", command=cierre)
 pagos_menu.add_command(label="Facturas")
 

@@ -85,7 +85,7 @@ def representante():
     Label(mywindow,bg="#213141").pack()
     Button(mywindow, text="GUARDAR", font=("Cambria", 6),
                            width=40, height=10, anchor="center",command=insertarestudiante).pack()
-
+    
     mywindow.mainloop()
     
 def insertarestudiante():
@@ -240,7 +240,7 @@ def alumno():
                             width=7, height=1, fg="white",
                             anchor="center", justify="center", bg="#213141").pack()
     
-    edireccion_entry= Entry(mywindow,textvariable=edireccion_entry ,font=("Cambria", 16), width=25, justify="center")
+    edireccion_entry= Entry(mywindow, textvariable=edireccion_entry ,font=("Cambria", 16), width=25, justify="center")
     edireccion_entry.pack()
 
     grado_label = Label(mywindow, text="curso ", font=("Cambria", 16),
