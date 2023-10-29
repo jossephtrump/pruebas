@@ -189,7 +189,9 @@ def alumno():
     global ecorreo_entry
     global ecedrepresentante_entry
     global egrado_entry
+    global egrado_combobox
 
+    egrado_combobox= tkinter.StringVar()
     ecedrepresentante_entry = tkinter.StringVar()
     ecedula_entry = tkinter.StringVar()
     eusername_entry = tkinter.StringVar()
@@ -263,7 +265,7 @@ def alumno():
     mywindow.mainloop()
 
 def ingresaralumno():
-   sql = "INSERT INTO alumno (cedula,cedula_representante,nombre,direccion,telefono,pago,curso)  VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')".format(ecedula_entry.get(),ecedrepresentante_entry.get(),eusername_entry.get(),edireccion_entry.get(),etelefono_entry.get(),0,egrado_entry.get())
+   sql = "INSERT INTO alumno (cedula,cedula_representante,nombre,direccion,telefono,pago,curso)  VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')".format(ecedula_entry.get(),ecedrepresentante_entry.get(),eusername_entry.get(),edireccion_entry.get(),etelefono_entry.get(),0,egrado_combobox.get())
 	
    
    cur.execute(sql)

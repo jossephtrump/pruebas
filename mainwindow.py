@@ -10,8 +10,9 @@ import customtkinter as ctk
 from menu_registro import *
 from funciones2 import *
 from menu_pagos import *
+from consulta import *
 #from funct import *
-
+from cobranza import*
 # Creamos una ventana principal
 root = ctk.CTk()
 
@@ -110,14 +111,13 @@ consultas_menu = Menu(menu_bar, tearoff=0, font=("calibri", 11),
 #creating cascade
 menu_bar.add_cascade(label="CONSULTAS", menu=consultas_menu)
 #creating elements for cascade
-consultas_menu.add_command(label="Info Representante")
-consultas_menu.add_command(label="Info Alumnos")
+consultas_menu.add_command(label="Info Representante",command=consulta_representante)
+consultas_menu.add_command(label="Info Alumnos",command=consulta_alumnos)
 #CREAR SUB_MENU MOROSIDAD
 morosidad_menu = Menu(consultas_menu, tearoff=0, font=("calibri", 11),
                     background="gray80")
-morosidad_menu.add_command(label="Por Alumno")
-morosidad_menu.add_command(label="Por Grado")
-morosidad_menu.add_command(label="Por Seccion")
+morosidad_menu.add_command(label="Por Alumno",command=consulta_alumnos)
+morosidad_menu.add_command(label="Por curso",command=consulta_curso)
 morosidad_menu.add_command(label="TOTAL")
 consultas_menu.add_cascade(label="MOROSIDAD", menu=morosidad_menu)
 consultas_menu.add_command(label="opcion 4") #extra option
@@ -127,9 +127,8 @@ cobranza_menu = Menu(menu_bar, tearoff=0, font=("calibri", 11),
                     background="gray80")
 menu_bar.add_cascade(label="COBRANZA", menu=cobranza_menu)
 
-cobranza_menu.add_command(label="Por Alumno")
-cobranza_menu.add_command(label="Por Grado")
-cobranza_menu.add_command(label="Por Seccion")
+cobranza_menu.add_command(label="Por Alumno",command=cobranza_alumno)
+cobranza_menu.add_command(label="Por curso",command=cobranza_curso)
 cobranza_menu.add_command(label="TOTAL")
 
 # Iniciamos el bucle principal de la ventana
