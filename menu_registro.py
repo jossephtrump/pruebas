@@ -14,10 +14,13 @@ cur = mydb.cursor()
 def representante():
     global mywindow
     mywindow = ctk.CTk()
-    mywindow.geometry("700x600")
+    mywindow.geometry("600x600")
     mywindow.title("Registro")
     mywindow.resizable(False, False)
     mywindow.config(background="#213141")
+    main_title = ctk.CTkLabel(mywindow, text="Registro | Representantes", font=("Cambria", 20),
+                              fg_color="gray21", width=500, height=3)
+    main_title.pack(fill="x")
 
     global cedula_entry
     global username_entry
@@ -33,58 +36,84 @@ def representante():
     caalumnos_entry = IntVar()
     correo_entry = tkinter.StringVar()
 
-    h = 110
-    username_label = Label(mywindow, text="Nombre ", font=("Cambria", 16),
+    # Funct for invalid entries
+    def mostrar_error():
+        valor1 = username_entry.get()
+        valor2 = cedula_entry.get()
+        valor3 = telefono_entry.get()
+        valor4 = caalumnos_entry.get()
+
+        # Validamos el valor de la entrada de texto
+        if valor1 == "" or valor2 == "" or valor3 == "" or valor4 == "":
+            messagebox.showerror("Error", "La entrada no es válida")
+
+    vcmd = mywindow.register(mostrar_error)
+
+    h = 125
+    username_label = Label(mywindow, text="Nombre", font=("Cambria", 16),
                        width=7, height=1, fg="white", anchor="center",
                         justify="center", bg="#213141")
-    username_label.pack()
+    username_label.place(x=h, y=30)
     
+    a = 125
+    w = 30
+    username_entry = Entry(mywindow, font=("Cambria", 16),justify='center', width=w,
+                           validatecommand=(vcmd, "%P"))
+    username_entry.place(x=a, y=70)
 
-    username_entry = Entry(mywindow, font=("Cambria", 16),justify='center', width=25)
-    username_entry.pack()
 
-    cedula_label = Label(mywindow, text="Cedula ", font=("Cambria", 16),
+    cedula_label = Label(mywindow, text="Cedula", font=("Cambria", 16),
                         width=7, height=1, fg="white", anchor="center",
                         justify="center", bg="#213141")
-    cedula_label.pack()
+    cedula_label.place(x=h, y=110)
 
-    cedula_entry = Entry(mywindow, font=("Cambria", 16),justify='center', width=25)
-    cedula_entry.pack()
+    cedula_entry = Entry(mywindow, font=("Cambria", 16),justify='center', width=w)
+    cedula_entry.place(x=a, y=150)
 
-    tlf_label = Label(mywindow, text="Telefono ", font=("Cambria", 16),
+
+    tlf_label = Label(mywindow, text="Telefono", font=("Cambria", 16),
                     width=7, height=1, fg="white", anchor="center",
                     justify="center", bg="#213141")
-    tlf_label.pack()
+    tlf_label.place(x=h, y=190)
 
-    telefono_entry = Entry(mywindow, font=("Cambria", 16),justify='center', width=25)
-    telefono_entry.pack()
+    telefono_entry = Entry(mywindow, font=("Cambria", 16),justify='center', width=w)
+    telefono_entry.place(x=a, y=230)
 
-    correo_label = Label(mywindow, text="Correo ", font=("Cambria", 16),
+
+    correo_label = Label(mywindow, text="Correo", font=("Cambria", 16),
                         width=7, height=1, fg="white",
                         anchor="center", justify="center", bg="#213141")
     
-    correo_label.pack()
-    correo_entry = Entry(mywindow,font=("Cambria", 16), justify='center',width=25)
-    correo_entry.pack()
+    correo_label.place(x=h, y=270)
+    correo_entry = Entry(mywindow,font=("Cambria", 16), justify='center', width=w)
+    correo_entry.place(x=a, y=310)
    
-    direccion_label = Label(mywindow, text="Direccion ", font=("Cambria", 16),
+
+    direccion_label = Label(mywindow, text="Direccion", font=("Cambria", 16),
                             width=7, height=1, fg="white",
                             anchor="center", justify="center", bg="#213141")
     
-    direccion_label.pack()
-    direccion_entry= Entry(mywindow,font=("Cambria", 16), width=25, justify="center")
-    direccion_entry.pack()
+    direccion_label.place(x=h, y=350)
+    direccion_entry= Entry(mywindow,font=("Cambria", 16), width=w,  justify="center" )
+    direccion_entry.place(x=a, y=390)
 
-    canatidad_label = Label(mywindow, text="cantidad de alumnos", font=("Cambria", 16),
-                            width=16, height=2, fg="white",
+
+    canatidad_label = Label(mywindow, text="Nº Alumnos", font=("Cambria", 16),
+                            width=8, height=1, fg="white",
                             anchor="center", justify="center", bg="#213141")
-    canatidad_label.pack()
+    canatidad_label.place(x=h, y=430)
 
-    caalumnos_entry = Entry(mywindow, font=("Cambria", 16),justify='center', width=20)
-    caalumnos_entry.pack()
-    Label(mywindow,bg="#213141").pack()
-    Button(mywindow, text="GUARDAR", font=("Cambria", 6),
-                           width=40, height=10, anchor="center",command=insertarestudiante).pack()
+    caalumnos_entry = Entry(mywindow, font=("Cambria", 16), justify='center', width=w)
+    caalumnos_entry.place(x=a, y=470)
+
+
+
+    submit_btn = CTkButton(mywindow, text="GUARDAR", font=("Cambria", 18),
+                           width=30, height=20, anchor="center", command=lambda: [mostrar_error(),
+                                                                                  insertarestudiante()]) #hay que ver como se ejecuta esa funcion,
+    #sin errores
+    submit_btn.place(x=250, y=540)
+
     
     mywindow.mainloop()
     
@@ -100,85 +129,7 @@ def insertarestudiante():
             mydb.commit()
             print(cur.rowcount,"Fue insetado correctamente")
     
-    
-    # # Manipulate data from registration fields
-    # mydb = mysql.connector.connect(host='localhost',user='root',passwd='',db='colegio')
-    # cur = mydb.cursor()
-    # global username_entry
-    # global cedula_entry
-    # global tlf_entry
-    # global correo_entry
-    # global direccion_entry
-    # global cantidad_alumnos_entry
-    # global username
-    # global cedula
-    # global tlf
-    # global correo
-    # global direccion
-    # global cantidad_alumnos
-    # username = StringVar()
-    # cedula = StringVar()
-    # tlf = StringVar()
-    # correo = StringVar()
-    # direccion = StringVar()
-    # cantidad_alumnos = StringVar()
-    
-    
-
-
-    # # Create new instance - Class cTk()
-    # mywindow = ctk.CTk()
-    # mywindow.geometry("700x600")
-    # mywindow.title("Registro")
-    # mywindow.resizable(False, False)
-    # mywindow.config(background="#213141")
-   
-  
-    # def mostrar_error(widget, textvariable):
-    #     valor1 = username_entry.get()
-    #     valor2 = cedula_entry.get()
-    #     valor3 = tlf_entry.get()
-    #     valor4 = cantidad_alumnos_entry.get()
-
-    # # Validamos el valor de la entrada de texto
-    #     if valor1 == "" or valor2 == "" or valor3 == "" or valor4 == "":
-    #         messagebox.showerror("Error", "La entrada no es válida")
-    #     # Call the `mostrar_error()` function with the correct arguments
-    # mostrar_error(username_entry, username)
-
-   
-    
-    # def send_data():
-    #     username_info = username.get()
-    #     cedula_info = cedula.get()
-    #     tlf_info = tlf.get()
-    #     correo_info = correo.get()
-    #     direccion_info = direccion.get()
-    #     alumnos_info = cantidad_alumnos.get()
-
-    #     # Insert the user data into the database
-    #     insert_query = "INSERT INTO representantes (username, cedula, tlf, correo, direccion, cantidad_alumnos) VALUES (%s, %s, %s, %s, %s, %s)"
-    #     cur.execute(insert_query, (username_info, cedula_info, tlf_info, correo_info, direccion_info, alumnos_info))
-    #     mydb.commit()
-
-    #     # Delete data from previous event
-    #     username_entry.delete(0, END)
-    #     cedula_entry.delete(0, END)
-    #     tlf_entry.delete(0, END)
-    #     correo_entry.delete(0, END)
-    #     direccion_entry.delete(0, END)
-    #     cantidad_alumnos_entry.delete(0, END)
-
-    
-    # # Submit Button
-    # submit_btn = CTkButton(mywindow, text="GUARDAR", font=("Cambria", 18),
-    #                        width=30, height=20, anchor="center", command=lambda:  send_data())
-
-    # submit_btn.place(x=300, y=540)
-    # # bucle
-    # mywindow.mainloop()
-
-
+ 
 # funcion para registrar los alumnos
 def alumno():
 
