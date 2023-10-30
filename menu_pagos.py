@@ -1,5 +1,4 @@
 from tkinter import *
-
 import tkinter as tkinter
 import customtkinter
 from customtkinter import *
@@ -16,71 +15,108 @@ cur = mydb.cursor()
 def inscripcion():
     global mwindow
     mwindow = ctk.CTk()
-    mwindow.geometry("700x600")
-    mwindow.title("Registro")
+    mwindow.geometry("500x500")
+    mwindow.title("Pago de Inscripcion")
     mwindow.resizable(False, False)
     mwindow.config(background="#213141")
+    main_title = ctk.CTkLabel(mwindow, text="PAGO | INSCRIPCION", font=("Cambria", 20),
+                              fg_color="gray21", width=500, height=3)
+    main_title.pack(fill="x")
 
     global cedula_entry
     global representante_entry
+    global monto_entry
 
     cedula_entry = StringVar()
     representante_entry = StringVar()
+    monto_entry = IntVar()
 
-    inscripcion = Label(mwindow,text="ingrese la cedula ", font=("Cambria", 16),
-                         width=35, height=1, fg="white", anchor="center",
-                         justify="center", bg="#213141").pack()
+    def mostrar_error():
+        valor1 = representante_entry.get() 
+        valor2 = cedula_entry.get()
+        valor3 = monto_entry.get()
+
+        # Validamos el valor de la entrada de texto
+        if valor1 == "":
+            messagebox.showerror("Error", "Cedula del Representante")
+            return True
+        elif  valor2 == "":
+            messagebox.showerror("Error",  "Ingrese IDCedula")
+            return True
+        elif  valor3 == "":
+            messagebox.showerror("Error", "Ingrese Monto")
+            return True
+        return False
+
+    vcmd = mwindow.register(mostrar_error)
+
+
+    h = 100
+    w = 25
+    representante_label = Label(mwindow,text="Cedula Representante", font=("Cambria", 16),
+                         width=35, height=1, fg="white", anchor=W,
+                         justify="center", bg="#213141").place(x=h, y=50)
+    representante_entry= Entry(mwindow,textvariable=representante_entry, font=("Cambria", 16), width=w, 
+                               justify="center", validatecommand=(vcmd, "%P"))
+    representante_entry.place(x=h, y=90)
+
+    id_alumno = Label(mwindow,text="IDCedula Alumno ", font=("Cambria", 16),
+                         width=35, height=1, fg="white", anchor=W,
+                         justify="center", bg="#213141").place(x=h, y=140)
+    cedula_entry= Entry(mwindow,textvariable=cedula_entry, font=("Cambria", 16), width=w, 
+                        justify="center", validatecommand=(vcmd, "%P"))
+    cedula_entry.place(x=h, y=180)
+
+    monto_label =  Label(mwindow,text="MONTO", font=("Cambria", 16),
+                         width=35, height=1, fg="white", anchor=W,
+                         justify="center", bg="#213141").place(x=h, y=230)
+    monto_entry= Entry(mwindow,textvariable=monto_entry, font=("Cambria", 16), width=w, 
+                        justify="center", validatecommand=(vcmd, "%P"))
+    monto_entry.place(x=h, y=270)
+
+    submit_btn = CTkButton(mwindow, text="GUARDAR", font=("Cambria", 18),
+                           width=30, height=20, anchor="center", command=lambda: [insertinscrip() if not mostrar_error() else None]) 
+    submit_btn.place(x=200, y=350)
+
     
-    cedula_entry= Entry(mwindow,textvariable=cedula_entry, font=("Cambria", 16), width=25, justify="center")
-
-    cedula_entry.pack()
-
-    inscripcion = Label(mwindow,text="ingrese la cedula del representante ", font=("Cambria", 16),
-                         width=35, height=1, fg="white", anchor="center",
-                         justify="center", bg="#213141").pack()
-    
-    representante_entry= Entry(mwindow,textvariable=representante_entry, font=("Cambria", 16), width=25, justify="center")
-    representante_entry.pack()
-
-    Label(mwindow,bg="#213141").pack()
-
-    Button(mwindow,text="pago inscripcion",font=("Cambria", 6),
-                           width=40, height=10, anchor="center",command=insertinscrip).pack()
-
     mwindow.mainloop()
 
 def insertinscrip():
         
         hora_min = datetime.now().strftime("%H:%M")
         print("Hora y Minutos: ", hora_min)
-
         # Crea una variable para el día, mes y año
         dia_mes_anio = datetime.now().strftime("%Y/%m/%d")
         print("Día/Mes/Año: ", dia_mes_anio)
 
-        #setencias
+        #sentencias
         sql = "UPDATE alumno SET pago= '{0}' WHERE cedula='{1}'".format(60,cedula_entry.get())
         sql2= "INSERT INTO registro_pagos (fecha,hora,cedula_estudiante,cedula_representante,pago) VALUES ('{0}','{1}','{2}','{3}','{4}')".format(dia_mes_anio, hora_min,cedula_entry.get(),representante_entry.get(),60)
 
-            #ejecucion de sentencia
+        #ejecucion de sentencia
         cur.execute(sql)
         cur.execute(sql2)
-
         #comprobacion de sentencias (crear notificacion)
         if cur.rowcount == 0:
             mydb.rollback()
         else:
             mydb.commit()
             print(cur.rowcount,"Fue insetado correctamente")
+            representante_entry.delete(0, END)
+            cedula_entry.delete(0, END)
+            monto_entry.delete(0, END)
     
 
 def pago_mensualidad():
     global mwindow
     mwindow = ctk.CTk()
-    mwindow.geometry("700x600")
-    mwindow.title("Registro")
+    mwindow.geometry("500x500")
+    mwindow.title("PAGOS")
     mwindow.resizable(False, False)
     mwindow.config(background="#213141")
+    main_title = ctk.CTkLabel(mwindow, text="PAGO | MES", font=("Cambria", 20),
+                              fg_color="gray21", width=500, height=3)
+    main_title.pack(fill="x")
 
     global cantidad_pago
     global cedula_entry
@@ -91,39 +127,57 @@ def pago_mensualidad():
     representante_entry = StringVar()
     cantidad_pago = IntVar()
 
-    inscripcion = Label(mwindow,text="ingrese la cedula ", font=("Cambria", 16),
-                         width=35, height=1, fg="white", anchor="center",
-                         justify="center", bg="#213141").pack()
-    
-    cedula_entry= Entry(mwindow,textvariable=cedula_entry, font=("Cambria", 16), width=25, justify="center")
+    def mostrar_error():
+        valor1 = representante_entry.get()
+        valor2 = cedula_entry.get()
+        valor3 = cantidad_pago.get()
 
-    cedula_entry.pack()
+        # Validamos el valor de la entrada de texto
+        if valor1 == "":
+            messagebox.showerror("Error", "Cedula del Representante")
+            return True
+        elif valor2 == "":
+            messagebox.showerror("Error", "Ingrese IDCedula")
+            return True
+        elif valor3 == "":
+            messagebox.showerror("Error", "Ingrese Monto")
+            return True
+        return False
 
-    inscripcion = Label(mwindow,text="ingrese la cedula del representante ", font=("Cambria", 16),
-                         width=35, height=1, fg="white", anchor="center",
-                         justify="center", bg="#213141").pack()
-    
-    representante_entry= Entry(mwindow,textvariable=representante_entry, font=("Cambria", 16), width=25, justify="center")
-    representante_entry.pack()
-    
-    inscripcion = Label(mwindow,text="ingrese la cantidad pagada ", font=("Cambria", 16),
-                         width=35, height=1, fg="white", anchor="center",
-                         justify="center", bg="#213141").pack()
-    
-    cantidad_pago = Entry(mwindow,textvariable=cantidad_pago,font=("Cambria", 16), width=25, justify="center")
-    cantidad_pago.pack()
+    vcmd = mwindow.register(mostrar_error)
 
-    Label(mwindow,bg="#213141").pack()
+    h = 100
+    w = 25
+    representate_label = Label(mwindow,text="Cedula Representante", font=("Cambria", 16),
+                         width=35, height=1, fg="white", anchor=W,
+                         justify="center", bg="#213141").place(x=h, y=50)
+    representante_entry= Entry(mwindow,textvariable=representante_entry, font=("Cambria", 16), 
+                               width=w, justify="center", validatecommand=(vcmd, "%P"))
+    representante_entry.place(x=h, y=90)
 
-    Button(mwindow,text="pago inscripcion",font=("Cambria", 6),
-                           width=40, height=10, anchor="center",command=factura).pack()
+    cedula_label = Label(mwindow,text="IDCedula ", font=("Cambria", 16),
+                         width=35, height=1, fg="white", anchor=W,
+                         justify="center", bg="#213141").place(x=h, y=140)
+    cedula_entry= Entry(mwindow,textvariable=cedula_entry, font=("Cambria", 16), width=w,
+                         justify="center", validatecommand=(vcmd, "%P"))
+    cedula_entry.place(x=h, y=180)
+    
+    cantidad_label = Label(mwindow,text="MONTO PAGADO ", font=("Cambria", 16),
+                         width=35, height=1, fg="white", anchor=W,
+                         justify="center", bg="#213141").place(x=h, y=230)
+    cantidad_pago = Entry(mwindow,textvariable=cantidad_pago, font=("Cambria", 16), width=w, 
+                          justify="center", validatecommand=(vcmd, "%P"))
+    cantidad_pago.place(x=h, y=270)
+
+    submit_btn = CTkButton(mwindow, text="GUARDAR", font=("Cambria", 18),
+                           width=30, height=20, anchor="center", 
+                           command=lambda: [factura() if not mostrar_error() else None])
+    submit_btn.place(x=200, y=350)
 
     mwindow.mainloop()
 
 def factura():
      
- 
-            
     hora_min = datetime.now().strftime("%H:%M")
     print("Hora y Minutos: ", hora_min)
 
@@ -144,4 +198,8 @@ def factura():
         mydb.rollback()
     else:
         mydb.commit()
-        print(cur.rowcount,"Fue insetado correctamente")    
+        print(cur.rowcount,"Fue insetado correctamente")
+        cedula_entry.delete(0, END)
+        representante_entry.delete(0, END)
+        cantidad_pago.delete(0, END)
+        

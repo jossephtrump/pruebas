@@ -1,3 +1,7 @@
+ Label(mywindow,bg="#213141").pack()
+    Button(mywindow, text="GUARDAR", font=("Cambria", 6),
+                           width=30, height=20, anchor="center",command=insertarestudiante)
+
 # importaciones necesarias
 from tkinter import *
 
@@ -36,30 +40,6 @@ def representante():
     caalumnos_entry = IntVar()
     correo_entry = tkinter.StringVar()
 
-    # Funct for invalid entries
-    def mostrar_error():
-        valor1 = username_entry.get()
-        valor2 = cedula_entry.get()
-        valor3 = telefono_entry.get()
-        valor4 = caalumnos_entry.get()
-
-        # Validamos el valor de la entrada de texto
-        if valor1 == "":
-            messagebox.showerror("Error", "Ingrese Nombre")
-            return True
-        elif  valor2 == "":
-            messagebox.showerror("Error", "Ingrese Cedula")
-            return True
-        elif  valor3 == "":
-            messagebox.showerror("Error", "Ingrese Celular")
-            return True
-        elif  valor4 == "":
-            messagebox.showerror("Error", "Ingrese Nº de Alumnos")
-            return True
-        return False
-
-    vcmd = mywindow.register(mostrar_error)
-
     h = 125
     username_label = Label(mywindow, text="Nombre", font=("Cambria", 16),
                        width=7, height=1, fg="white", anchor="center",
@@ -68,8 +48,7 @@ def representante():
     
     a = 125
     w = 30
-    username_entry = Entry(mywindow, font=("Cambria", 16),justify='center', width=w,
-                           validatecommand=(vcmd, "%P"))
+    username_entry = Entry(mywindow, font=("Cambria", 16),justify='center', width=w)
     username_entry.place(x=a, y=70)
 
 
@@ -78,8 +57,7 @@ def representante():
                         justify="center", bg="#213141")
     cedula_label.place(x=h, y=110)
 
-    cedula_entry = Entry(mywindow, font=("Cambria", 16),justify='center', width=w,
-                          validatecommand=(vcmd, "%P")) #validacion, no puede quedar vacio
+    cedula_entry = Entry(mywindow, font=("Cambria", 16),justify='center', width=w)
     cedula_entry.place(x=a, y=150)
 
 
@@ -115,14 +93,13 @@ def representante():
                             anchor="center", justify="center", bg="#213141")
     canatidad_label.place(x=h, y=430)
 
-    caalumnos_entry = Entry(mywindow, font=("Cambria", 16), justify='center', width=w, 
-                            validatecommand=(vcmd, "%P"))
+    caalumnos_entry = Entry(mywindow, font=("Cambria", 16), justify='center', width=w)
     caalumnos_entry.place(x=a, y=470)
 
 
+
     submit_btn = CTkButton(mywindow, text="GUARDAR", font=("Cambria", 18),
-                           width=30, height=20, anchor="center", 
-                           command=lambda: [insertarestudiante() if not mostrar_error() else None]) 
+                           width=30, height=20, anchor="center", command=insertarestudiante)
     submit_btn.place(x=250, y=540)
 
     
@@ -130,12 +107,7 @@ def representante():
     
 def insertarestudiante():
         
-        sql = "INSERT INTO representante (cedula,nombre,direccion,telefono,numero_alumnos,correo)  VALUES ('{0}','{1}','{2}','{3}','{4}','{5}')".format(cedula_entry.get(),
-               username_entry.get(),
-               direccion_entry.get(),
-               telefono_entry.get(),
-               caalumnos_entry.get(),
-               correo_entry.get())
+        sql = "INSERT INTO representante (cedula,nombre,direccion,telefono,numero_alumnos,correo)  VALUES ('{0}','{1}','{2}','{3}','{4}','{5}')".format(cedula_entry.get(),username_entry.get(),direccion_entry.get(),telefono_entry.get(),caalumnos_entry.get(),correo_entry.get())
 	
    
         cur.execute(sql)
@@ -143,14 +115,87 @@ def insertarestudiante():
             mydb.rollback()
         else:
             mydb.commit()
-            print(cur.rowcount,"Fue insertado correctamente") #chinazo_XD
-            cedula_entry.delete(0, END)
-            username_entry.delete(0, END)
-            direccion_entry.delete(0, END)
-            telefono_entry.delete(0, END)
-            caalumnos_entry.delete(0, END)
-            correo_entry.delete(0, END)
- 
+            print(cur.rowcount,"Fue insetado correctamente")
+    
+    
+    # # Manipulate data from registration fields
+    # mydb = mysql.connector.connect(host='localhost',user='root',passwd='',db='colegio')
+    # cur = mydb.cursor()
+    # global username_entry
+    # global cedula_entry
+    # global tlf_entry
+    # global correo_entry
+    # global direccion_entry
+    # global cantidad_alumnos_entry
+    # global username
+    # global cedula
+    # global tlf
+    # global correo
+    # global direccion
+    # global cantidad_alumnos
+    # username = StringVar()
+    # cedula = StringVar()
+    # tlf = StringVar()
+    # correo = StringVar()
+    # direccion = StringVar()
+    # cantidad_alumnos = StringVar()
+    
+    
+
+
+    # # Create new instance - Class cTk()
+    # mywindow = ctk.CTk()
+    # mywindow.geometry("700x600")
+    # mywindow.title("Registro")
+    # mywindow.resizable(False, False)
+    # mywindow.config(background="#213141")
+   
+  
+    # def mostrar_error(widget, textvariable):
+    #     valor1 = username_entry.get()
+    #     valor2 = cedula_entry.get()
+    #     valor3 = tlf_entry.get()
+    #     valor4 = cantidad_alumnos_entry.get()
+
+    # # Validamos el valor de la entrada de texto
+    #     if valor1 == "" or valor2 == "" or valor3 == "" or valor4 == "":
+    #         messagebox.showerror("Error", "La entrada no es válida")
+    #     # Call the `mostrar_error()` function with the correct arguments
+    # mostrar_error(username_entry, username)
+
+   
+    
+    # def send_data():
+    #     username_info = username.get()
+    #     cedula_info = cedula.get()
+    #     tlf_info = tlf.get()
+    #     correo_info = correo.get()
+    #     direccion_info = direccion.get()
+    #     alumnos_info = cantidad_alumnos.get()
+
+    #     # Insert the user data into the database
+    #     insert_query = "INSERT INTO representantes (username, cedula, tlf, correo, direccion, cantidad_alumnos) VALUES (%s, %s, %s, %s, %s, %s)"
+    #     cur.execute(insert_query, (username_info, cedula_info, tlf_info, correo_info, direccion_info, alumnos_info))
+    #     mydb.commit()
+
+    #     # Delete data from previous event
+    #     username_entry.delete(0, END)
+    #     cedula_entry.delete(0, END)
+    #     tlf_entry.delete(0, END)
+    #     correo_entry.delete(0, END)
+    #     direccion_entry.delete(0, END)
+    #     cantidad_alumnos_entry.delete(0, END)
+
+    
+    # # Submit Button
+    # submit_btn = CTkButton(mywindow, text="GUARDAR", font=("Cambria", 18),
+    #                        width=30, height=20, anchor="center", command=lambda:  send_data())
+
+    # submit_btn.place(x=300, y=540)
+    # # bucle
+    # mywindow.mainloop()
+
+
 # funcion para registrar los alumnos
 def alumno():
 
@@ -174,91 +219,64 @@ def alumno():
 
     global mywindow
     mywindow = ctk.CTk()
-    mywindow.geometry("600x600")
+    mywindow.geometry("700x600")
     mywindow.title("Registro")
     mywindow.resizable(False, False)
     mywindow.config(background="#213141")
-    main_title = ctk.CTkLabel(mywindow, text="Registro | Alumnos", font=("Cambria", 20),
-                              fg_color="gray21", width=500, height=3)
-    main_title.pack(fill="x")
 
-    def mostrar_error():
-        valor1 = eusername_entry.get()
-        valor2 = ecedrepresentante_entry.get() 
-        valor3 = ecedula_entry.get()
-        valor4 = egrado_combobox.get()
-
-        # Validamos el valor de la entrada de texto
-        if valor1 == "":
-            messagebox.showerror("Error", "Ingrese Nombre")
-            return True
-        elif  valor2 == "":
-            messagebox.showerror("Error",  "Ingrese Cedula del Representante")
-            return True
-        elif  valor3 == "":
-            messagebox.showerror("Error", "Ingrese IDCedula")
-            return True
-        elif  valor4 == "":
-            messagebox.showerror("Error", "Grado")
-            return True
-        return False
-
-    vcmd = mywindow.register(mostrar_error)
-
-
-    h = 125
-    w = 30
     username_label = Label(mywindow, text="Nombre ", font=("Cambria", 16),
-                           width=7, height=1, fg="white", anchor="w",
-                           justify="left", bg="#213141")
-    username_label.place(x=h, y=30)
-    eusername_entry = Entry(mywindow, textvariable=eusername_entry, font=("Cambria", 16),
-                            justify='center', width=w, validatecommand=(vcmd, "%P"))
-    eusername_entry.place(x=h, y=70)
+                           width=7, height=1, fg="white", anchor="center",
+                           justify="center", bg="#213141").pack()
+    
+    eusername_entry = Entry(mywindow, textvariable=eusername_entry, font=("Cambria", 9),justify='center', width=35)
+    eusername_entry.pack()
 
 
     cedula_label = Label(mywindow, text="Cedula del representante ", font=("Cambria", 16),
-                         width=w, height=1, fg="white", anchor=W,
-                         justify="left", bg="#213141")
-    cedula_label.place(x=h, y=110)
-    ecedrepresentante_entry = Entry(mywindow, textvariable=ecedrepresentante_entry, font=("Cambria", 16),
-                                    justify='center' ,width=w, validatecommand=(vcmd, "%P") )
-    ecedrepresentante_entry.place(x=h, y=150)
+                         width=35, height=1, fg="white", anchor="center",
+                         justify="center", bg="#213141").pack()
+    
+    ecedrepresentante_entry = Entry(mywindow, textvariable=ecedrepresentante_entry, font=("Cambria", 9),justify='center' ,width=30)
+    ecedrepresentante_entry.pack()
 
-
-    Idcedula_label = Label(mywindow, text="IDCedula ", font=("Cambria", 16),
-                         width=7, height=1, fg="white", anchor=W,
-                         justify="left", bg="#213141")
-    Idcedula_label.place(x=h, y=190)
-    ecedula_entry = Entry(mywindow, textvariable=ecedula_entry, font=("Cambria", 16),justify='center', width=w,
-                          validatecommand=(vcmd, "%P"))
-    ecedula_entry.place(x=h, y=230)
+    cedula_label = Label(mywindow, text="Cedula ", font=("Cambria", 16),
+                         width=7, height=1, fg="white", anchor="center",
+                         justify="center", bg="#213141").pack()
+    
+    ecedula_entry = Entry(mywindow, textvariable=ecedula_entry, font=("Cambria", 9),justify='center', width=25)
+    ecedula_entry.pack()
 
     tlf_label = Label(mywindow, text="Telefono ", font=("Cambria", 16),
-                      width=7, height=1, fg="white", anchor=W,
-                      justify="left", bg="#213141").place(x=h, y=270)
+                      width=7, height=1, fg="white", anchor="center",
+                      justify="center", bg="#213141").pack()
     
-    etelefono_entry = Entry(mywindow, textvariable=etelefono_entry, font=("Cambria", 16),justify='center', width=w)
-    etelefono_entry.place(x=h, y=310)
+    etelefono_entry = Entry(mywindow, textvariable=etelefono_entry, font=("Cambria", 16),justify='center', width=25)
+    etelefono_entry.pack()
 
    
-    grado_label = Label(mywindow, text="Curso ", font=("Cambria", 16),
+
+    direccion_label = Label(mywindow, text="Direccion ", font=("Cambria", 16),
+                            width=7, height=1, fg="white",
+                            anchor="center", justify="center", bg="#213141").pack()
+    
+    edireccion_entry= Entry(mywindow, textvariable=edireccion_entry ,font=("Cambria", 16), width=25, justify="center")
+    edireccion_entry.pack()
+
+    grado_label = Label(mywindow, text="curso ", font=("Cambria", 16),
                        width=7, height=1, fg="white",
-                       anchor=W, justify="left", bg="#213141").place(x=h, y=350)
+                       anchor="center", justify="center", bg="#213141").pack()
 
     grado_values = ('S3', 'S4', 'S5', '1GU', '2GU', '3GU', '4GU', '5GU', '6GU',
                    '1AA', '1AB', '2AA', '2AB', '3AA', '3AB', '4AA', '4AB', '5AA', '5AB')
 
     egrado_combobox = ttk.Combobox(mywindow,textvariable=egrado_entry ,values=grado_values,
-                                  font=("Cambria", 16), justify='center',width=28,validatecommand=(vcmd, "%P") )
+                                  font=("Cambria", 16), justify='center',width=25)
     egrado_combobox.current(0)
-    egrado_combobox.place(x=h, y=390)
+    egrado_combobox.pack()
 
-   
-    submit_btn = CTkButton(mywindow, text="GUARDAR", font=("Cambria", 18),
-                           width=30, height=20, anchor="center", 
-                         command=lambda: [ingresaralumno() if not mostrar_error() else None]) 
-    submit_btn.place(x=250, y=540)
+    Label(mywindow,bg="#213141").pack()
+    Button(mywindow, text="GUARDAR", font=("Cambria", 6),
+                           width=40, height=10, anchor="center",command=ingresaralumno).pack()
 
     # bucle
     mywindow.mainloop()
@@ -280,12 +298,13 @@ def ingresaralumno():
         print("Direccion:", edireccion_entry.get())
         print("Telefono:", etelefono_entry.get())
         print("Grado:", egrado_entry.get())
-        eusername_entry.delete(0, END)
-        ecedrepresentante_entry.delete(0, END)
-        ecedula_entry.delete(0, END)
-        etelefono_entry.delete(0, END)
-        
-       
+
+
+
+
+
+
+
 
 def opcion():
     print("Opcion: No se que va aqui aun")
