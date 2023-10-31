@@ -17,8 +17,8 @@ cur = mydb.cursor()
 def consulta_alumnos():
     global mwindow
     mwindow = ctk.CTk()
-    mwindow.geometry("1280x720")
-    mwindow.title("Registro")
+    mwindow.geometry("600x600")
+    mwindow.title("Consultas")
     mwindow.resizable(False, False)
     mwindow.config(background="#213141")
 
@@ -61,15 +61,7 @@ def consulta_alumnos():
      
     llenar_tabla()
     mwindow.mainloop()
-
-# def llenar_tabla():
-#     sql="SELECT * from alumnos"
-#     cur.execute()
-#     filas = cur.fetchall()
-#     for fila in filas:
-
-   
-  
+ 
     
 def consulta_curso():
     print("ayuda")
@@ -78,8 +70,8 @@ def consulta_curso():
 def consulta_representante():
     global mwindow
     mwindow = ctk.CTk()
-    mwindow.geometry("1280x720")
-    mwindow.title("Registro")
+    mwindow.geometry("600x600")
+    mwindow.title("Consultas")
     mwindow.resizable(False, False)
     mwindow.config(background="#213141")
 

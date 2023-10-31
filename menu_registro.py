@@ -284,8 +284,6 @@ def ingresaralumno():
         ecedrepresentante_entry.delete(0, END)
         ecedula_entry.delete(0, END)
         etelefono_entry.delete(0, END)
-        
-       
 
 def opcion():
     print("Opcion: No se que va aqui aun")
