@@ -15,12 +15,34 @@ cur = mydb.cursor()
 
 
 def consulta_alumnos():
+
+
+    
+    def vaciar_tabla():
+        filas = tvEstudiante.get_children()
+        for fila in filas:
+            tvEstudiante.delete(fila)
+
+    def llenar_tabla():
+        vaciar_tabla()
+        sql="select * from alumno where cedula = '{0}'".format(cedula_entry.get())
+        cur.execute(sql)
+        filas = cur.fetchall()
+        for fila in filas:
+            cedula= fila[0]
+            tvEstudiante.insert("", END,cedula , text=cedula, values= fila )
+
+
     global mwindow
     mwindow = ctk.CTk()
     mwindow.geometry("600x600")
     mwindow.title("Consultas")
     mwindow.resizable(False, False)
     mwindow.config(background="#213141")
+
+    global cedula_entry
+
+    cedula_entry = StringVar()
 
     tvEstudiante = ttk.Treeview(mwindow)
     tvEstudiante.grid(column=0,row=3, columnspan=4)
@@ -44,22 +66,16 @@ def consulta_alumnos():
     tvEstudiante.heading("pago",text="pago",anchor=CENTER)
     tvEstudiante.heading("curso",text="curso",anchor=CENTER)
 
-    def vaciar_tabla():
-        filas = tvEstudiante.get_children()
-        for fila in filas:
-            tvEstudiante.delete(fila)
+    cedula_entry = Entry(mwindow, textvariable=cedula_entry, font=("Cambria", 16),justify='center',
+                          width=20)
+    cedula_entry.place(x=220, y=390)
+    submit_btn = CTkButton(mwindow, text="BUSCAR", font=("Cambria", 18),
+                           width=30, height=20, anchor="center", 
+                         command=llenar_tabla) 
+    submit_btn.place(x=301, y=450)
 
-    def llenar_tabla():
-        vaciar_tabla()
-        sql="select * from alumno"
-        cur.execute(sql)
-        filas = cur.fetchall()
-        for fila in filas:
-            cedula= fila[0]
-            tvEstudiante.insert("", END,cedula , text=cedula, values= fila )
 
-     
-    llenar_tabla()
+    
     mwindow.mainloop()
  
     
@@ -68,6 +84,28 @@ def consulta_curso():
 
 
 def consulta_representante():
+    def vaciar_tabla():
+        filas = tvEstudiante.get_children()
+        for fila in filas:
+            tvEstudiante.delete(fila)
+
+    def llenar_tabla():
+        vaciar_tabla()
+        sql="select * from representante where cedula= '{0}'".format(cedula_entry.get())
+        cur.execute(sql)
+        filas = cur.fetchall()
+        for fila in filas:
+            cedula= fila[0]
+            tvEstudiante.insert("", END,cedula , text=cedula, values= fila )
+
+     
+
+    global cedula_entry
+
+    cedula_entry = StringVar()
+
+
+
     global mwindow
     mwindow = ctk.CTk()
     mwindow.geometry("600x600")
@@ -96,20 +134,15 @@ def consulta_representante():
     tvEstudiante.heading("numero_alumnos",text="asociados",anchor=CENTER)
     tvEstudiante.heading("correo",text="correo",anchor=CENTER)
 
-    def vaciar_tabla():
-        filas = tvEstudiante.get_children()
-        for fila in filas:
-            tvEstudiante.delete(fila)
 
-    def llenar_tabla():
-        vaciar_tabla()
-        sql="select * from representante"
-        cur.execute(sql)
-        filas = cur.fetchall()
-        for fila in filas:
-            cedula= fila[0]
-            tvEstudiante.insert("", END,cedula , text=cedula, values= fila )
 
-     
-    llenar_tabla()
+    cedula_entry = Entry(mwindow, textvariable=cedula_entry, font=("Cambria", 16),justify='center',
+                          width=20)
+    cedula_entry.place(x=220, y=390)
+    submit_btn = CTkButton(mwindow, text="BUSCAR", font=("Cambria", 18),
+                           width=30, height=20, anchor="center", 
+                         command=llenar_tabla) 
+    submit_btn.place(x=301, y=450)
+
+    
     mwindow.mainloop()
