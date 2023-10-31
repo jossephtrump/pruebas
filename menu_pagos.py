@@ -7,6 +7,10 @@ from tkinter import ttk
 import tkinter.messagebox as messagebox
 import MySQLdb as mysql
 from datetime import *
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+
+
 
 mydb = mysql.connect(host='localhost',user='root',passwd='',db='colegio')
 cur = mydb.cursor()
@@ -78,6 +82,10 @@ def inscripcion():
                            width=30, height=20, anchor="center", command=lambda: [insertinscrip() if not mostrar_error() else None]) 
     submit_btn.place(x=200, y=350)
 
+    submit_btn = CTkButton(mwindow, text="factura", font=("Cambria", 18),
+                           width=30, height=20, anchor="center", 
+                           command=lambda: generar_factura_pdf("factura.pdf"))
+    submit_btn.place(x=200, y=400)
     
     mwindow.mainloop()
 
@@ -174,6 +182,12 @@ def pago_mensualidad():
                            command=lambda: [factura() if not mostrar_error() else None])
     submit_btn.place(x=200, y=350)
 
+
+    submit_btn = CTkButton(mwindow, text="factura", font=("Cambria", 18),
+                           width=30, height=20, anchor="center", 
+                           command=lambda: generar_factura_pdf("{0}.pdf".format(cedula_entry.get())))
+    submit_btn.place(x=200, y=400)
+
     mwindow.mainloop()
 
 def factura():
@@ -202,4 +216,79 @@ def factura():
         cedula_entry.delete(0, END)
         representante_entry.delete(0, END)
         cantidad_pago.delete(0, END)
+
+
+
+
+def generar_factura_pdf(archivo):
+    global nombre
+
+   
+    sql = "SELECT direccion  FROM representante WHERE cedula = '{0}'".format(representante_entry.get())
+    cur.execute(sql)
+    direccion = cur.fetchone()[0]
+
+
+    sql2 = "SELECT nombre FROM representante WHERE cedula = '{0}'".format(representante_entry.get())
+    cur.execute(sql2)
+    nombre = cur.fetchone()[0]
+
+    sql3= "SELECT nombre FROM alumno WHERE cedula = '{0}'".format(cedula_entry.get())
+    cur.execute(sql3)
+    estudiante= cur.fetchone()[0]
+
+    print(estudiante)
+
+    c = canvas.Canvas(archivo, pagesize=letter)
+    width, height = letter
+    total = 0
+    y = height - 50
+
+    c.setFont("Helvetica", 20)
+    c.drawString(50, y, "U. S. P. INTEGRAL EL PRADO")
+
+    y -= 30
+    c.setFont("Helvetica", 16)
+    c.drawString(50, y, 'Urb. El Prado Av 70B-79F')
+
+    y -= 30
+    c.setFont("Helvetica", 16)
+    c.drawString(50, y, 'Pquia. Raul Leoni Maracaibo')
+
+    y -= 30
+    c.setFont("Helvetica", 16)
+    c.drawString(50, y, 'telef: 0261-7544608')
+
+    fecha = datetime.now().strftime("%Y/%m")
+    fecha2 = datetime.now().strftime("%Y/%m/%d")
+
+
+    y -= 30
+    c.setFont("Helvetica", 10)
+    c.drawString(50, y, 'representante: {0}'.format(nombre))
+    c.drawString(300, y, 'fecha: {0}'.format(fecha2))
+
+    y -= 30
+    c.drawString(50, y, 'direccion: {0}'.format(direccion))
+    c.drawString(300, y, 'CI/RIF: {0}'.format( representante_entry.get()))
+
+    y -= 30
+    
+    
+    y -= 30
+    
+
+    y -= 30
+    c.drawString(50, y, 'DESCRIPCION ')
+
+    y -= 30
+    c.drawString(50, y, "MENSUALIDAD '{0}'  '{1}'".format(fecha, estudiante))
+
+    y -= 30
+    c.drawString(50, y, 'TOTAL: {0}'.format( cantidad_pago.get()))
+
+    c.save()
+
+
+   
         
