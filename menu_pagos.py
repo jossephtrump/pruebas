@@ -29,16 +29,16 @@ def inscripcion():
 
     global cedula_entry
     global representante_entry
-    global monto_entry
+    global cantidad_pago
 
     cedula_entry = StringVar()
     representante_entry = StringVar()
-    monto_entry = IntVar()
+    cantidad_pago = IntVar()
 
     def mostrar_error():
         valor1 = representante_entry.get() 
         valor2 = cedula_entry.get()
-        valor3 = monto_entry.get()
+        valor3 = cantidad_pago.get()
 
         # Validamos el valor de la entrada de texto
         if valor1 == "":
@@ -74,9 +74,9 @@ def inscripcion():
     monto_label =  Label(mwindow,text="MONTO", font=("Cambria", 16),
                          width=35, height=1, fg="white", anchor=W,
                          justify="center", bg="#213141").place(x=h, y=230)
-    monto_entry= Entry(mwindow,textvariable=monto_entry, font=("Cambria", 16), width=w, 
+    cantidad_pago= Entry(mwindow,textvariable=cantidad_pago, font=("Cambria", 16), width=w, 
                         justify="center", validatecommand=(vcmd, "%P"))
-    monto_entry.place(x=h, y=270)
+    cantidad_pago.place(x=h, y=270)
 
     submit_btn = CTkButton(mwindow, text="GUARDAR", font=("Cambria", 18),
                            width=30, height=20, anchor="center", command=lambda: [insertinscrip() if not mostrar_error() else None]) 
@@ -84,7 +84,7 @@ def inscripcion():
 
     submit_btn = CTkButton(mwindow, text="factura", font=("Cambria", 18),
                            width=30, height=20, anchor="center", 
-                           command=lambda: generar_factura_pdf("factura.pdf"))
+                           command=lambda: generar_factura_pdf('{0}.pdf'.format(cedula_entry.get())))
     submit_btn.place(x=200, y=400)
     
     mwindow.mainloop()
@@ -112,7 +112,7 @@ def insertinscrip():
             print(cur.rowcount,"Fue insetado correctamente")
             representante_entry.delete(0, END)
             cedula_entry.delete(0, END)
-            monto_entry.delete(0, END)
+            cantidad_pago.delete(0, END)
     
 
 def pago_mensualidad():
@@ -221,7 +221,13 @@ def factura():
 
 
 def generar_factura_pdf(archivo):
-    global nombre
+    global nombre   
+
+    if not os.path.exists('pdfs'):
+        os.makedirs('pdfs')
+
+    # Agregar la carpeta 'pdfs' a la ruta del archivo
+    archivo = os.path.join('pdfs', cedula_entry.get())
 
    
     sql = "SELECT direccion  FROM representante WHERE cedula = '{0}'".format(representante_entry.get())
@@ -282,10 +288,10 @@ def generar_factura_pdf(archivo):
     c.drawString(50, y, 'DESCRIPCION ')
 
     y -= 30
-    c.drawString(50, y, "MENSUALIDAD '{0}'  '{1}'".format(fecha, estudiante))
+    c.drawString(50, y, 'MENSUALIDAD {0}  {1}'.format(fecha, estudiante))
 
     y -= 30
-    c.drawString(50, y, 'TOTAL: {0}'.format( cantidad_pago.get()))
+    c.drawString(50, y, 'TOTAL: {0}'.format(cantidad_pago.get()))
 
     c.save()
 
